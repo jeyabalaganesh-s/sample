@@ -23,8 +23,8 @@ const plans = [
 ];
 
 export default function SubscriptionPage() {
-  const [loadingPlan, setLoadingPlan] = useState(null);
-  const [message, setMessage] = useState("");
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
     if (message) {
@@ -33,7 +33,7 @@ export default function SubscriptionPage() {
     }
   }, [message]);
 
-  const handleSubscribe = async (plan) => {
+  const handleSubscribe = async (plan: string) => {
     setLoadingPlan(plan);
     setMessage("");
 
@@ -56,7 +56,7 @@ export default function SubscriptionPage() {
       );
 
       setMessage(response.data.message || "Subscribed successfully!");
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       const errMsg =
         err.response?.data?.message || "Subscription failed. Please try again.";
@@ -67,8 +67,8 @@ export default function SubscriptionPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-black via-zinc-900 to-black text-gray-100 pt-24 pb-10 font-sans">
-      <div className="px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 w-full">
+    <div className="min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-black via-zinc-900 to-black text-gray-100 pt-24 pb-10 font-sans">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-52 xl:px-24">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-orange-300 to-purple-500 drop-shadow-md select-none">
           Choose Your Plan
         </h1>
@@ -79,11 +79,11 @@ export default function SubscriptionPage() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
           {plans.map((plan, idx) => (
             <div
               key={idx}
-              className="rounded-2xl bg-black/60 border border-white/30 backdrop-blur-md shadow-2xl hover:shadow-purple-500/50 hover:scale-[1.05] transition-transform duration-300 p-8 flex flex-col"
+              className="rounded-2xl bg-black/60 border border-white/30 backdrop-blur-md shadow-2xl hover:shadow-purple-500/50 hover:scale-[1.05] transition-transform duration-300 p-8 flex flex-col w-full max-w-xs"
             >
               <h2 className="text-3xl font-bold text-white mb-3 drop-shadow-md">
                 {plan.name}
@@ -95,7 +95,10 @@ export default function SubscriptionPage() {
 
               <ul className="list-disc list-inside mb-8 space-y-3 text-sm text-gray-200 flex-grow">
                 {plan.features.map((feature, i) => (
-                  <li key={i} className="hover:text-purple-200 transition-colors">
+                  <li
+                    key={i}
+                    className="hover:text-purple-200 transition-colors"
+                  >
                     {feature}
                   </li>
                 ))}
