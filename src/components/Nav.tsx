@@ -132,25 +132,25 @@ const Nav = () => {
           {/* Signup and Login Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             <button
-              onClick={() => (window.location.href = "/login")}
+              onClick={() => (window.location.href = "/signup")}
               className={`px-4 py-1.5 rounded-md font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 ${
                 isScrolled
                   ? "bg-transparent border border-white text-white hover:bg-white hover:text-black"
                   : "bg-white bg-opacity-20 text-white hover:bg-opacity-30"
               }`}
             >
-              Login
+              Sign Up
             </button>
 
             <button
-              onClick={() => (window.location.href = "/signup")}
+              onClick={() => (window.location.href = "/login")}
               className={`px-4 py-1.5 rounded-md font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 ${
                 isScrolled
                   ? "bg-indigo-600 text-white hover:bg-indigo-700"
                   : "bg-white bg-opacity-20 text-white hover:bg-opacity-30"
               }`}
             >
-              Sign Up
+              Login
             </button>
           </div>
 
