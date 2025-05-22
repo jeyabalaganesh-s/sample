@@ -52,7 +52,7 @@ const Nav = () => {
 
   return (
     <nav
-      className={`fixed w-full top-0 z-40 transition-colors duration-300 ${
+      className={`fixed w-full top-5 z-40 transition-colors duration-300 ${
         isScrolled ? "bg-black shadow-md" : "bg-transparent"
       }`}
     >
