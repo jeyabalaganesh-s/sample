@@ -29,11 +29,15 @@ const Nav = () => {
   const handleLeave = () => {
     closeTimeoutRef.current = setTimeout(() => {
       setOpenDropdown(null);
-    }, 200); // wait 200ms before closing
+    }, 250); // delay closing so user can hover into dropdown
   };
 
-  const renderDropdown = (items) => (
-    <div className={dropdownClass}>
+  const renderDropdown = (items, menu) => (
+    <div
+      className={dropdownClass}
+      onMouseEnter={() => handleEnter(menu)}
+      onMouseLeave={handleLeave}
+    >
       {items.map((item, index) => (
         <a
           key={index}
@@ -53,11 +57,11 @@ const Nav = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-12">
           {/* Brand */}
           <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition">
-            <span className="text-3xl select-none text-indigo-600">⚡</span>
-            <span className="text-xl font-semibold select-none text-white">LEADA AI</span>
+            <span className="text-2xl select-none text-indigo-600">⚡</span>
+            <span className="text-lg font-semibold select-none text-white">LEADA AI</span>
           </Link>
 
           {/* Desktop Links */}
@@ -70,12 +74,15 @@ const Nav = () => {
             >
               <button className={navLinkClass}>Features</button>
               {openDropdown === "features" &&
-                renderDropdown([
-                  { href: "/features/ai-analytics", label: "AI Analytics" },
-                  { href: "/features/dashboards", label: "Custom Dashboards" },
-                  { href: "/features/feedback", label: "User Feedback" },
-                  { href: "/features/insights", label: "Real-Time Insights" },
-                ])}
+                renderDropdown(
+                  [
+                    { href: "/features/ai-analytics", label: "AI Analytics" },
+                    { href: "/features/dashboards", label: "Custom Dashboards" },
+                    { href: "/features/feedback", label: "User Feedback" },
+                    { href: "/features/insights", label: "Real-Time Insights" },
+                  ],
+                  "features"
+                )}
             </div>
 
             {/* Pricing */}
@@ -91,12 +98,15 @@ const Nav = () => {
             >
               <button className={navLinkClass}>Solutions</button>
               {openDropdown === "solutions" &&
-                renderDropdown([
-                  { href: "/solutions/ecommerce", label: "E-commerce" },
-                  { href: "/solutions/saas", label: "SaaS Platforms" },
-                  { href: "/solutions/enterprise", label: "Enterprise" },
-                  { href: "/solutions/startups", label: "Startups" },
-                ])}
+                renderDropdown(
+                  [
+                    { href: "/solutions/ecommerce", label: "E-commerce" },
+                    { href: "/solutions/saas", label: "SaaS Platforms" },
+                    { href: "/solutions/enterprise", label: "Enterprise" },
+                    { href: "/solutions/startups", label: "Startups" },
+                  ],
+                  "solutions"
+                )}
             </div>
 
             {/* Resources */}
@@ -107,17 +117,31 @@ const Nav = () => {
             >
               <button className={navLinkClass}>Resources</button>
               {openDropdown === "resources" &&
-                renderDropdown([
-                  { href: "/blog", label: "Blog" },
-                  { href: "/help-center", label: "Help Center" },
-                  { href: "/docs", label: "Documentation" },
-                  { href: "/community", label: "Community" },
-                ])}
+                renderDropdown(
+                  [
+                    { href: "/blog", label: "Blog" },
+                    { href: "/help-center", label: "Help Center" },
+                    { href: "/docs", label: "Documentation" },
+                    { href: "/community", label: "Community" },
+                  ],
+                  "resources"
+                )}
             </div>
           </div>
 
-          {/* Signup Button */}
+          {/* Signup and Login Buttons */}
           <div className="hidden md:flex items-center space-x-4">
+            <button
+              onClick={() => (window.location.href = "/login")}
+              className={`px-4 py-1.5 rounded-md font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 ${
+                isScrolled
+                  ? "bg-transparent border border-white text-white hover:bg-white hover:text-black"
+                  : "bg-white bg-opacity-20 text-white hover:bg-opacity-30"
+              }`}
+            >
+              Login
+            </button>
+
             <button
               onClick={() => (window.location.href = "/signup")}
               className={`px-4 py-1.5 rounded-md font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 ${
@@ -152,6 +176,30 @@ const Nav = () => {
           </button>
         </div>
       </div>
+
+      {/* Mobile Dropdown Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-black text-white px-6 py-4 space-y-2">
+          <a href="/features" className="block hover:text-indigo-400">
+            Features
+          </a>
+          <a href="/pricing" className="block hover:text-indigo-400">
+            Pricing
+          </a>
+          <a href="/solutions" className="block hover:text-indigo-400">
+            Solutions
+          </a>
+          <a href="/resources" className="block hover:text-indigo-400">
+            Resources
+          </a>
+          <a href="/login" className="block hover:text-indigo-400 font-medium">
+            Login
+          </a>
+          <a href="/signup" className="block font-bold text-indigo-400">
+            Sign Up
+          </a>
+        </div>
+      )}
     </nav>
   );
 };

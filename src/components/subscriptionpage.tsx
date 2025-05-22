@@ -68,8 +68,8 @@ export default function SubscriptionPage() {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-black via-zinc-900 to-black text-gray-100 pt-24 pb-10 font-sans">
-      <div className="w-full px-4 sm:px-6 md:px-12 lg:px-52 xl:px-20 max-w-none mx-auto">
-        <h1 className="text-5xl font-extrabold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-orange-300 to-purple-500 drop-shadow-md select-none">
+      <div className="px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 w-full">
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-orange-300 to-purple-500 drop-shadow-md select-none">
           Choose Your Plan
         </h1>
 
@@ -79,11 +79,11 @@ export default function SubscriptionPage() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {plans.map((plan, idx) => (
             <div
               key={idx}
-              className="relative min-w-[280px] md:min-w-[280px] lg:min-w-[240px] rounded-2xl bg-black/60 border border-white/30 backdrop-blur-md shadow-2xl hover:shadow-purple-500/50 hover:scale-[1.05] transition-transform duration-300 p-8 flex flex-col"
+              className="rounded-2xl bg-black/60 border border-white/30 backdrop-blur-md shadow-2xl hover:shadow-purple-500/50 hover:scale-[1.05] transition-transform duration-300 p-8 flex flex-col"
             >
               <h2 className="text-3xl font-bold text-white mb-3 drop-shadow-md">
                 {plan.name}
@@ -122,4 +122,4 @@ export default function SubscriptionPage() {
       </div>
     </div>
   );
-} 
+}
