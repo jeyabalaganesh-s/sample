@@ -17,7 +17,7 @@ const Nav = () => {
   const navLinkClass = isScrolled
     ? "text-white hover:text-indigo-500"
     : "text-white hover:text-indigo-300";
-
+  
   const dropdownClass =
     "absolute left-0 top-full mt-2 flex-col bg-white text-gray-800 rounded-md shadow-lg z-50 py-4 px-6 min-w-[200px]";
 

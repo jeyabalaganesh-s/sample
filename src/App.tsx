@@ -1,9 +1,10 @@
 // App.tsx or App.js
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Nav from './components/Nav';
+import Nav from './pages/Nav';
 import LoginPage from './components/login'; // Import your login page here
-import SubscriptionPage from './components/subscriptionpage'; // adjust the path
+import SubscriptionPage from './pages/subscriptionpage'; // adjust the path
 import './styles/global.css';
+import Signup from './pages/signup';
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
       <Routes>
         <Route path="/pricing" element={<SubscriptionPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<Signup/>} />
         {/* Add more routes as needed */}
         <Route path="/" element={<> {/* Your homepage component here, or empty for now */} </>} />
       </Routes>
