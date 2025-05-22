@@ -1,18 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const closeTimeoutRef = useRef(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    setIsLoggedIn(!!token);
-
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
+    setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -22,7 +19,32 @@ const Nav = () => {
     : "text-white hover:text-indigo-300";
 
   const dropdownClass =
-    "absolute hidden group-hover:flex flex-col top-10 left-0 bg-white text-gray-800 rounded-md shadow-xl z-50 py-4 px-6 min-w-[200px]";
+    "absolute left-0 top-full mt-2 flex-col bg-white text-gray-800 rounded-md shadow-lg z-50 py-4 px-6 min-w-[200px]";
+
+  const handleEnter = (menu) => {
+    if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+    setOpenDropdown(menu);
+  };
+
+  const handleLeave = () => {
+    closeTimeoutRef.current = setTimeout(() => {
+      setOpenDropdown(null);
+    }, 200); // wait 200ms before closing
+  };
+
+  const renderDropdown = (items) => (
+    <div className={dropdownClass}>
+      {items.map((item, index) => (
+        <a
+          key={index}
+          href={item.href}
+          className="block mt-1 first:mt-0 hover:text-indigo-600"
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
+  );
 
   return (
     <nav
@@ -35,52 +57,66 @@ const Nav = () => {
           {/* Brand */}
           <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition">
             <span className="text-3xl select-none text-indigo-600">⚡</span>
-            <span className={`text-xl font-semibold select-none ${isScrolled ? "text-white" : "text-white"}`}>
-              LEADA AI
-            </span>
+            <span className="text-xl font-semibold select-none text-white">LEADA AI</span>
           </Link>
 
-          {/* Desktop links */}
+          {/* Desktop Links */}
           <div className="hidden md:flex space-x-8 font-medium items-center">
-
-            {/* Features Dropdown */}
-            <div className="relative group">
-              <button className={`transition duration-200 ${navLinkClass}`}>Features</button>
-              <div className={dropdownClass}>
-                <a href="/features/ai-analytics" className="hover:text-indigo-600">AI Analytics</a>
-                <a href="/features/dashboards" className="hover:text-indigo-600 mt-1">Custom Dashboards</a>
-                <a href="/features/feedback" className="hover:text-indigo-600 mt-1">User Feedback</a>
-                <a href="/features/insights" className="hover:text-indigo-600 mt-1">Real-Time Insights</a>
-              </div>
+            {/* Features */}
+            <div
+              className="relative"
+              onMouseEnter={() => handleEnter("features")}
+              onMouseLeave={handleLeave}
+            >
+              <button className={navLinkClass}>Features</button>
+              {openDropdown === "features" &&
+                renderDropdown([
+                  { href: "/features/ai-analytics", label: "AI Analytics" },
+                  { href: "/features/dashboards", label: "Custom Dashboards" },
+                  { href: "/features/feedback", label: "User Feedback" },
+                  { href: "/features/insights", label: "Real-Time Insights" },
+                ])}
             </div>
 
             {/* Pricing */}
-            <a href="/pricing" className={`transition duration-200 ${navLinkClass}`}>Pricing</a>
+            <a href="/pricing" className={`transition duration-200 ${navLinkClass}`}>
+              Pricing
+            </a>
 
-            {/* Solutions Dropdown */}
-            <div className="relative group">
-              <button className={`transition duration-200 ${navLinkClass}`}>Solutions</button>
-              <div className={dropdownClass}>
-                <a href="/solutions/ecommerce" className="hover:text-indigo-600">E-commerce</a>
-                <a href="/solutions/saas" className="hover:text-indigo-600 mt-1">SaaS Platforms</a>
-                <a href="/solutions/enterprise" className="hover:text-indigo-600 mt-1">Enterprise</a>
-                <a href="/solutions/startups" className="hover:text-indigo-600 mt-1">Startups</a>
-              </div>
+            {/* Solutions */}
+            <div
+              className="relative"
+              onMouseEnter={() => handleEnter("solutions")}
+              onMouseLeave={handleLeave}
+            >
+              <button className={navLinkClass}>Solutions</button>
+              {openDropdown === "solutions" &&
+                renderDropdown([
+                  { href: "/solutions/ecommerce", label: "E-commerce" },
+                  { href: "/solutions/saas", label: "SaaS Platforms" },
+                  { href: "/solutions/enterprise", label: "Enterprise" },
+                  { href: "/solutions/startups", label: "Startups" },
+                ])}
             </div>
 
-            {/* Resources Dropdown */}
-            <div className="relative group">
-              <button className={`transition duration-200 ${navLinkClass}`}>Resources</button>
-              <div className={dropdownClass}>
-                <a href="/blog" className="hover:text-indigo-600">Blog</a>
-                <a href="/help-center" className="hover:text-indigo-600 mt-1">Help Center</a>
-                <a href="/docs" className="hover:text-indigo-600 mt-1">Documentation</a>
-                <a href="/community" className="hover:text-indigo-600 mt-1">Community</a>
-              </div>
+            {/* Resources */}
+            <div
+              className="relative"
+              onMouseEnter={() => handleEnter("resources")}
+              onMouseLeave={handleLeave}
+            >
+              <button className={navLinkClass}>Resources</button>
+              {openDropdown === "resources" &&
+                renderDropdown([
+                  { href: "/blog", label: "Blog" },
+                  { href: "/help-center", label: "Help Center" },
+                  { href: "/docs", label: "Documentation" },
+                  { href: "/community", label: "Community" },
+                ])}
             </div>
           </div>
 
-          {/* Right side */}
+          {/* Signup Button */}
           <div className="hidden md:flex items-center space-x-4">
             <button
               onClick={() => (window.location.href = "/signup")}
@@ -94,12 +130,10 @@ const Nav = () => {
             </button>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile Menu Button */}
           <button
-            onClick={toggleMenu}
-            className={`md:hidden focus:outline-none ${
-              isScrolled ? "text-gray-700" : "text-white"
-            }`}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className={`md:hidden focus:outline-none ${isScrolled ? "text-gray-700" : "text-white"}`}
             aria-label="Toggle menu"
           >
             <svg
