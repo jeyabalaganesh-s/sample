@@ -1,21 +1,21 @@
-// App.tsx or App.js
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Nav from './pages/Nav';
-import LoginPage from './components/login'; // Import your login page here
-import SubscriptionPage from './pages/subscriptionpage'; // adjust the path
-import './styles/global.css';
-import Signup from './pages/signup';
+// src/App.tsx
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "./pages/layout";
+import SubscriptionPage from "./pages/subscriptionpage";
+import LoginPage from "./components/GoogleLogin";
+import Signup from "./pages/signup";
+import "./styles/global.css"; // Ensure this contains the html/body height fix
 
 const App = () => {
   return (
     <Router>
-      <Nav />
       <Routes>
-        <Route path="/pricing" element={<SubscriptionPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<Signup/>} />
-        {/* Add more routes as needed */}
-        <Route path="/" element={<> {/* Your homepage component here, or empty for now */} </>} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<div className="p-10 text-center">Welcome to LEADA AI</div>} />
+          <Route path="pricing" element={<SubscriptionPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="signup" element={<Signup />} />
+        </Route>
       </Routes>
     </Router>
   );

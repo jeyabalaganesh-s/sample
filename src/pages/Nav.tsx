@@ -52,8 +52,8 @@ const Nav = () => {
 
   return (
     <nav
-      className={`fixed w-full top-5 z-40 transition-colors duration-300 ${
-        isScrolled ? "bg-black shadow-md" : "bg-transparent"
+      className={`fixed w-full top-5 left-2 z-40 transition-colors duration-500 ${
+        isScrolled ? "bg-black shadow-gray-500/90 shadow-md" : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 md:px-6">
@@ -146,7 +146,7 @@ const Nav = () => {
               onClick={() => (window.location.href = "/login")}
               className={`px-4 py-1.5 rounded-md font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 ${
                 isScrolled
-                  ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                  ? "bg-black-600 text-white border-white hover:bg-white hover:text-black"
                   : "bg-white bg-opacity-20 text-white hover:bg-opacity-30"
               }`}
             >

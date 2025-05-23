@@ -20,6 +20,24 @@ const plans = [
     features: ["Unlimited Tokens", "Advanced Analytics", "Priority Support"],
     tokens: "Unlimited",
   },
+   {
+    name: "Free",
+    price: "₹0",
+    features: ["20 Tokens", "Basic Queue Access"],
+    tokens: 20,
+  },
+  {
+    name: "Gold",
+    price: "₹499/month",
+    features: ["Unlimited Tokens", "Priority Queue Access", "Standard Support"],
+    tokens: "Unlimited",
+  },
+  {
+    name: "Platinum",
+    price: "₹999/month",
+    features: ["Unlimited Tokens", "Advanced Analytics", "Priority Support"],
+    tokens: "Unlimited",
+  },
 ];
 
 export default function SubscriptionPage() {
@@ -67,8 +85,8 @@ export default function SubscriptionPage() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-black via-zinc-800 to-black text-gray-100 pt-24 pb- font-sans">
-      <div className="absolute w-full top-24 z-10 sm:px-24 lg:px-44 ">
+    <div className="relative bg-gradient-to-br from-black via-zinc-800 to-black text-gray-100 pt-24 pb-24 font-sans min-h-screen">
+      <div className="w-full sm:px-24 lg:px-44">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-orange-300 to-purple-500 drop-shadow-md select-none">
           Choose Your Plan
         </h1>
@@ -126,3 +144,4 @@ export default function SubscriptionPage() {
     </div>
   );
 }
+      
