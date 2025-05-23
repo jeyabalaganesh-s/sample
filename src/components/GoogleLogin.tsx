@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // Add this line
+import { useState } from 'react'; // Add this line
 
 import { useNavigate } from 'react-router-dom';
 import { signInWithPopup } from 'firebase/auth';
