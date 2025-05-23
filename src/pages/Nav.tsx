@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
+type DropdownItem = { href: string; label: string };
+
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(null);
-  const closeTimeoutRef = useRef(null);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
@@ -17,11 +19,11 @@ const Nav = () => {
   const navLinkClass = isScrolled
     ? "text-white hover:text-indigo-500"
     : "text-white hover:text-indigo-300";
-  
+
   const dropdownClass =
     "absolute left-0 top-full mt-2 flex-col bg-white text-gray-800 rounded-md shadow-lg z-50 py-4 px-6 min-w-[200px]";
 
-  const handleEnter = (menu) => {
+  const handleEnter = (menu: string) => {
     if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
     setOpenDropdown(menu);
   };
@@ -32,13 +34,13 @@ const Nav = () => {
     }, 250); // delay closing so user can hover into dropdown
   };
 
-  const renderDropdown = (items, menu) => (
+  const renderDropdown = (items: DropdownItem[], menu: string) => (
     <div
       className={dropdownClass}
       onMouseEnter={() => handleEnter(menu)}
       onMouseLeave={handleLeave}
     >
-      {items.map((item, index) => (
+      {items.map((item: DropdownItem, index: number) => (
         <a
           key={index}
           href={item.href}
@@ -157,7 +159,9 @@ const Nav = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={`md:hidden focus:outline-none ${isScrolled ? "text-gray-700" : "text-white"}`}
+            className={`md:hidden focus:outline-none ${
+              isScrolled ? "text-gray-700" : "text-white"
+            }`}
             aria-label="Toggle menu"
           >
             <svg
