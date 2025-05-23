@@ -1,3 +1,5 @@
+import React, { useState } from 'react'; // Add this line
+
 import { useNavigate } from 'react-router-dom';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from "../firebase/config";
@@ -13,6 +15,9 @@ import {
   useMediaQuery
 } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
+
+// rest of your component code remains the same...
+
 
 const GoogleLogin = () => {
   const navigate = useNavigate();
