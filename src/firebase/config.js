@@ -6,7 +6,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyCZHAD91y4bHkNMp-nxcpP1SYQ6DCAJDpc",
   authDomain: "leada-ai-4d9d6.firebaseapp.com",
   projectId: "leada-ai-4d9d6",
-  storageBucket: "leada-ai-4d9d6.firebasestorage.app",
+  storageBucket: "leada-ai-4d9d6.appspot.com", // ✅ corrected
   messagingSenderId: "816049493853",
   appId: "1:816049493853:web:7bdaa56b522f35e27c7ab4",
   measurementId: "G-TJ96QS3PHL"
@@ -14,8 +14,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Initialize firebase Authentication and get a reference to the service
 
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
