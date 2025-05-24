@@ -41,13 +41,14 @@ const Nav = () => {
       onMouseLeave={handleLeave}
     >
       {items.map((item: DropdownItem, index: number) => (
-        <a
+        <Link
           key={index}
-          href={item.href}
+          to={item.href}
           className="block mt-1 first:mt-0 hover:text-indigo-600"
+          onClick={() => setOpenDropdown(null)} // close dropdown on click
         >
           {item.label}
-        </a>
+        </Link>
       ))}
     </div>
   );
@@ -74,7 +75,14 @@ const Nav = () => {
               onMouseEnter={() => handleEnter("features")}
               onMouseLeave={handleLeave}
             >
-              <button className={navLinkClass}>Features</button>
+              <Link
+                to="/features"
+                className={navLinkClass + " cursor-pointer select-none"}
+                aria-haspopup="true"
+                aria-expanded={openDropdown === "features" ? "true" : "false"}
+              >
+                Features
+              </Link>
               {openDropdown === "features" &&
                 renderDropdown(
                   [
@@ -88,9 +96,9 @@ const Nav = () => {
             </div>
 
             {/* Pricing */}
-            <a href="/pricing" className={`transition duration-200 ${navLinkClass}`}>
+            <Link to="/pricing" className={`transition duration-200 ${navLinkClass}`}>
               Pricing
-            </a>
+            </Link>
 
             {/* Solutions */}
             <div
@@ -98,7 +106,14 @@ const Nav = () => {
               onMouseEnter={() => handleEnter("solutions")}
               onMouseLeave={handleLeave}
             >
-              <button className={navLinkClass}>Solutions</button>
+              <Link
+                to="/solutions"
+                className={navLinkClass + " cursor-pointer select-none"}
+                aria-haspopup="true"
+                aria-expanded={openDropdown === "solutions" ? "true" : "false"}
+              >
+                Solutions
+              </Link>
               {openDropdown === "solutions" &&
                 renderDropdown(
                   [
@@ -117,7 +132,14 @@ const Nav = () => {
               onMouseEnter={() => handleEnter("resources")}
               onMouseLeave={handleLeave}
             >
-              <button className={navLinkClass}>Resources</button>
+              <Link
+                to="/resources"
+                className={navLinkClass + " cursor-pointer select-none"}
+                aria-haspopup="true"
+                aria-expanded={openDropdown === "resources" ? "true" : "false"}
+              >
+                Resources
+              </Link>
               {openDropdown === "resources" &&
                 renderDropdown(
                   [
@@ -159,9 +181,7 @@ const Nav = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={`md:hidden focus:outline-none ${
-              isScrolled ? "text-gray-700" : "text-white"
-            }`}
+            className={`md:hidden focus:outline-none ${isScrolled ? "text-gray-700" : "text-white"}`}
             aria-label="Toggle menu"
           >
             <svg
@@ -184,24 +204,24 @@ const Nav = () => {
       {/* Mobile Dropdown Menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-black text-white px-6 py-4 space-y-2">
-          <a href="/features" className="block hover:text-indigo-400">
+          <Link to="/features" className="block hover:text-indigo-400" onClick={() => setIsMenuOpen(false)}>
             Features
-          </a>
-          <a href="/pricing" className="block hover:text-indigo-400">
+          </Link>
+          <Link to="/pricing" className="block hover:text-indigo-400" onClick={() => setIsMenuOpen(false)}>
             Pricing
-          </a>
-          <a href="/solutions" className="block hover:text-indigo-400">
+          </Link>
+          <Link to="/solutions" className="block hover:text-indigo-400" onClick={() => setIsMenuOpen(false)}>
             Solutions
-          </a>
-          <a href="/resources" className="block hover:text-indigo-400">
+          </Link>
+          <Link to="/resources" className="block hover:text-indigo-400" onClick={() => setIsMenuOpen(false)}>
             Resources
-          </a>
-          <a href="/login" className="block hover:text-indigo-400 font-medium">
+          </Link>
+          <Link to="/login" className="block hover:text-indigo-400 font-medium" onClick={() => setIsMenuOpen(false)}>
             Login
-          </a>
-          <a href="/signup" className="block font-bold text-indigo-400">
+          </Link>
+          <Link to="/signup" className="block font-bold text-indigo-400" onClick={() => setIsMenuOpen(false)}>
             Sign Up
-          </a>
+          </Link>
         </div>
       )}
     </nav>
