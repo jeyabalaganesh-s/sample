@@ -20,24 +20,6 @@ const plans = [
     features: ["Unlimited Tokens", "Advanced Analytics", "Priority Support"],
     tokens: "Unlimited",
   },
-   {
-    name: "Free",
-    price: "₹0",
-    features: ["20 Tokens", "Basic Queue Access"],
-    tokens: 20,
-  },
-  {
-    name: "Gold",
-    price: "₹499/month",
-    features: ["Unlimited Tokens", "Priority Queue Access", "Standard Support"],
-    tokens: "Unlimited",
-  },
-  {
-    name: "Platinum",
-    price: "₹999/month",
-    features: ["Unlimited Tokens", "Advanced Analytics", "Priority Support"],
-    tokens: "Unlimited",
-  },
 ];
 
 export default function SubscriptionPage() {
