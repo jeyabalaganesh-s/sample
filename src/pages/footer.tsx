@@ -1,49 +1,72 @@
-// src/pages/Footer.tsx
 import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="relative bg-white text-white py-10 px-4">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-12 px-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+        
+        {/* Brand Section */}
         <div>
-          <h2 className="text-xl font-bold text-indigo-500 mb-2">LEADA AI</h2>
-          <p className="text-sm text-gray-400">
+          <h2 className="text-2xl font-extrabold text-indigo-500 mb-3">LEADA AI</h2>
+          <p className="text-sm text-gray-400 leading-relaxed">
             Empowering smarter decisions through AI-powered insights and analytics.
           </p>
         </div>
 
+        {/* Features Section */}
         <div>
-          <h3 className="text-lg font-semibold mb-3 text-indigo-400">Features</h3>
-          <ul className="space-y-1 text-sm text-gray-300">
-            <li><Link to="/features/ai-analytics" className="hover:text-indigo-500">AI Analytics</Link></li>
-            <li><Link to="/features/dashboards" className="hover:text-indigo-500">Custom Dashboards</Link></li>
-            <li><Link to="/features/feedback" className="hover:text-indigo-500">User Feedback</Link></li>
-            <li><Link to="/features/insights" className="hover:text-indigo-500">Real-Time Insights</Link></li>
+          <h3 className="text-lg font-semibold mb-4 text-indigo-400">Features</h3>
+          <ul className="space-y-2 text-sm">
+            {["ai-analytics", "dashboards", "feedback", "insights"].map((item, idx) => (
+              <li key={idx}>
+                <Link
+                  to={`/features/${item}`}
+                  className="text-gray-300 hover:text-indigo-400 transition-colors duration-200"
+                >
+                  {item.replace("-", " ").replace(/\b\w/g, c => c.toUpperCase())}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
+        {/* Solutions Section */}
         <div>
-          <h3 className="text-lg font-semibold mb-3 text-indigo-400">Solutions</h3>
-          <ul className="space-y-1 text-sm text-gray-300">
-            <li><Link to="/solutions/ecommerce" className="hover:text-indigo-500">E-commerce</Link></li>
-            <li><Link to="/solutions/saas" className="hover:text-indigo-500">SaaS Platforms</Link></li>
-            <li><Link to="/solutions/enterprise" className="hover:text-indigo-500">Enterprise</Link></li>
-            <li><Link to="/solutions/startups" className="hover:text-indigo-500">Startups</Link></li>
+          <h3 className="text-lg font-semibold mb-4 text-indigo-400">Solutions</h3>
+          <ul className="space-y-2 text-sm">
+            {["ecommerce", "saas", "enterprise", "startups"].map((item, idx) => (
+              <li key={idx}>
+                <Link
+                  to={`/solutions/${item}`}
+                  className="text-gray-300 hover:text-indigo-400 transition-colors duration-200"
+                >
+                  {item.charAt(0).toUpperCase() + item.slice(1)}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
+        {/* Company Section */}
         <div>
-          <h3 className="text-lg font-semibold mb-3 text-indigo-400">Company</h3>
-          <ul className="space-y-1 text-sm text-gray-300">
-            <li><Link to="/about" className="hover:text-indigo-500">About</Link></li>
-            <li><Link to="/contact" className="hover:text-indigo-500">Contact</Link></li>
-            <li><Link to="/privacy" className="hover:text-indigo-500">Privacy Policy</Link></li>
-            <li><Link to="/terms" className="hover:text-indigo-500">Terms of Service</Link></li>
+          <h3 className="text-lg font-semibold mb-4 text-indigo-400">Company</h3>
+          <ul className="space-y-2 text-sm">
+            {["about", "contact", "privacy", "terms"].map((item, idx) => (
+              <li key={idx}>
+                <Link
+                  to={`/${item}`}
+                  className="text-gray-300 hover:text-indigo-400 transition-colors duration-200"
+                >
+                  {item === "terms" ? "Terms of Service" : item.replace(/\b\w/g, c => c.toUpperCase())}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
 
-      <div className="mt-10 text-center text-gray-500 text-sm">
+      {/* Copyright */}
+      <div className="mt-12 text-center text-gray-500 text-sm border-t border-gray-700 pt-6">
         © {new Date().getFullYear()} Leada AI. All rights reserved.
       </div>
     </footer>
