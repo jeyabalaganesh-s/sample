@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../firebase/config";
+import { signOut } from "firebase/auth";
 
 type DropdownItem = { href: string; label: string };
 
@@ -7,7 +9,10 @@ const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [user, setUser] = useState<any>(null);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
@@ -15,6 +20,24 @@ const Nav = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.removeItem("user");
+      setUser(null);
+      navigate("/");
+    } catch (error) {
+      console.error("Logout Error:", error);
+    }
+  };
 
   const navLinkClass = isScrolled
     ? "text-white hover:text-indigo-500"
@@ -31,7 +54,7 @@ const Nav = () => {
   const handleLeave = () => {
     closeTimeoutRef.current = setTimeout(() => {
       setOpenDropdown(null);
-    }, 250); // delay closing so user can hover into dropdown
+    }, 250);
   };
 
   const renderDropdown = (items: DropdownItem[], menu: string) => (
@@ -45,7 +68,7 @@ const Nav = () => {
           key={index}
           to={item.href}
           className="block mt-1 first:mt-0 hover:text-indigo-600"
-          onClick={() => setOpenDropdown(null)} // close dropdown on click
+          onClick={() => setOpenDropdown(null)}
         >
           {item.label}
         </Link>
@@ -69,18 +92,8 @@ const Nav = () => {
 
           {/* Desktop Links */}
           <div className="hidden md:flex space-x-8 font-medium items-center">
-            {/* Features */}
-            <div
-              className="relative"
-              onMouseEnter={() => handleEnter("features")}
-              onMouseLeave={handleLeave}
-            >
-              <Link
-                to="/features"
-                className={navLinkClass + " cursor-pointer select-none"}
-                aria-haspopup="true"
-                aria-expanded={openDropdown === "features" ? "true" : "false"}
-              >
+            <div className="relative" onMouseEnter={() => handleEnter("features")} onMouseLeave={handleLeave}>
+              <Link to="/features" className={navLinkClass + " cursor-pointer select-none"}>
                 Features
               </Link>
               {openDropdown === "features" &&
@@ -95,23 +108,12 @@ const Nav = () => {
                 )}
             </div>
 
-            {/* Pricing */}
             <Link to="/pricing" className={`transition duration-200 ${navLinkClass}`}>
               Pricing
             </Link>
 
-            {/* Solutions */}
-            <div
-              className="relative"
-              onMouseEnter={() => handleEnter("solutions")}
-              onMouseLeave={handleLeave}
-            >
-              <Link
-                to="/solutions"
-                className={navLinkClass + " cursor-pointer select-none"}
-                aria-haspopup="true"
-                aria-expanded={openDropdown === "solutions" ? "true" : "false"}
-              >
+            <div className="relative" onMouseEnter={() => handleEnter("solutions")} onMouseLeave={handleLeave}>
+              <Link to="/solutions" className={navLinkClass + " cursor-pointer select-none"}>
                 Solutions
               </Link>
               {openDropdown === "solutions" &&
@@ -126,18 +128,8 @@ const Nav = () => {
                 )}
             </div>
 
-            {/* Resources */}
-            <div
-              className="relative"
-              onMouseEnter={() => handleEnter("resources")}
-              onMouseLeave={handleLeave}
-            >
-              <Link
-                to="/resources"
-                className={navLinkClass + " cursor-pointer select-none"}
-                aria-haspopup="true"
-                aria-expanded={openDropdown === "resources" ? "true" : "false"}
-              >
+            <div className="relative" onMouseEnter={() => handleEnter("resources")} onMouseLeave={handleLeave}>
+              <Link to="/resources" className={navLinkClass + " cursor-pointer select-none"}>
                 Resources
               </Link>
               {openDropdown === "resources" &&
@@ -153,30 +145,45 @@ const Nav = () => {
             </div>
           </div>
 
-          {/* Signup and Login Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
-            <button
-              onClick={() => (window.location.href = "/signup")}
-              className={`px-4 py-1.5 rounded-md font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 ${
-                isScrolled
-                  ? "bg-transparent border border-white text-white hover:bg-white hover:text-black"
-                  : "bg-white bg-opacity-20 text-white hover:bg-opacity-30"
-              }`}
-            >
-              Sign Up
-            </button>
-
-            <button
-              onClick={() => (window.location.href = "/login")}
-              className={`px-4 py-1.5 rounded-md font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 ${
-                isScrolled
-                  ? "bg-black-600 text-white border-white hover:bg-white hover:text-black"
-                  : "bg-white bg-opacity-20 text-white hover:bg-opacity-30"
-              }`}
-            >
-              Login
-            </button>
-          </div>
+          {/* Desktop User Buttons */}
+          {!user ? (
+            <div className="hidden md:flex items-center space-x-4">
+              <button
+                onClick={() => navigate("/signup")}
+                className={`px-4 py-1.5 rounded-md font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 ${
+                  isScrolled
+                    ? "bg-transparent border border-white text-white hover:bg-white hover:text-black"
+                    : "bg-white bg-opacity-20 text-white hover:bg-opacity-30"
+                }`}
+              >
+                Sign Up
+              </button>
+              <button
+                onClick={() => navigate("/login")}
+                className={`px-4 py-1.5 rounded-md font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 ${
+                  isScrolled
+                    ? "bg-black-600 text-white border-white hover:bg-white hover:text-black"
+                    : "bg-white bg-opacity-20 text-white hover:bg-opacity-30"
+                }`}
+              >
+                Login
+              </button>
+            </div>
+          ) : (
+            <div className="hidden md:flex items-center space-x-4">
+              <img
+                src={user.photoURL}
+                alt="Profile"
+                className="w-9 h-9 rounded-full border-2 border-white"
+              />
+              <button
+                onClick={handleLogout}
+                className="px-4 py-1.5 bg-red-600 text-white rounded-md font-medium hover:bg-red-700 transition"
+              >
+                Sign Out
+              </button>
+            </div>
+          )}
 
           {/* Mobile Menu Button */}
           <button
@@ -201,7 +208,7 @@ const Nav = () => {
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu */}
+      {/* Mobile Dropdown */}
       {isMenuOpen && (
         <div className="md:hidden bg-black text-white px-6 py-4 space-y-2">
           <Link to="/features" className="block hover:text-indigo-400" onClick={() => setIsMenuOpen(false)}>
@@ -216,12 +223,33 @@ const Nav = () => {
           <Link to="/resources" className="block hover:text-indigo-400" onClick={() => setIsMenuOpen(false)}>
             Resources
           </Link>
-          <Link to="/login" className="block hover:text-indigo-400 font-medium" onClick={() => setIsMenuOpen(false)}>
-            Login
-          </Link>
-          <Link to="/signup" className="block font-bold text-indigo-400" onClick={() => setIsMenuOpen(false)}>
-            Sign Up
-          </Link>
+
+          {!user ? (
+            <>
+              <Link to="/login" className="block hover:text-indigo-400" onClick={() => setIsMenuOpen(false)}>
+                Login
+              </Link>
+              <Link to="/signup" className="block font-bold text-indigo-400" onClick={() => setIsMenuOpen(false)}>
+                Sign Up
+              </Link>
+            </>
+          ) : (
+            <>
+              <div className="flex items-center space-x-3 mt-3">
+                <img src={user.photoURL} alt="Profile" className="w-8 h-8 rounded-full border" />
+                <span>{user.displayName}</span>
+              </div>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setIsMenuOpen(false);
+                }}
+                className="block mt-2 text-red-500 hover:text-red-400"
+              >
+                Sign Out
+              </button>
+            </>
+          )}
         </div>
       )}
     </nav>
