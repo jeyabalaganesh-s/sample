@@ -113,8 +113,14 @@ export default function SubscriptionPage() {
                     : "bg-purple-400 text-black hover:bg-purple-600 focus:ring-purple-300"
                 }`}
               >
-                {loadingPlan === plan.name ? "Subscribing..." : "Subscribe"}
+                {loadingPlan === plan.name ? "Processing..." : "Subscribe"}
               </button>
+
+              {loadingPlan === plan.name && (
+                <p className="text-sm text-purple-300 text-center mt-3 animate-pulse">
+                  Processing your subscription...
+                </p>
+              )}
             </div>
           ))}
         </div>
@@ -126,4 +132,3 @@ export default function SubscriptionPage() {
     </div>
   );
 }
-      
