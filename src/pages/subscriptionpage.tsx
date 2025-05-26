@@ -68,7 +68,7 @@ export default function SubscriptionPage() {
 
   return (
     <div className="relative bg-gradient-to-br from-black via-purple-950 to-black text-gray-100 pt-24 pb-24 font-sans min-h-screen">
-      <div className="w-full sm:px-24 lg:px-44">
+      <div className="w-full px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-orange-300 to-purple-500 drop-shadow-md select-none">
           Choose Your Plan
         </h1>
