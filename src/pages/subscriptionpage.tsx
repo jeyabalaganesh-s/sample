@@ -67,8 +67,13 @@ export default function SubscriptionPage() {
   };
 
   return (
-    <div className="relative bg-gradient-to-br from-black via-purple-950 to-black text-gray-100 pt-24 pb-24 font-sans min-h-screen">
-      <div className="w-full px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32">
+    <div className="relative bg-gradient-to-br from-purple-950 via-black to-purple-900 text-gray-100 pt-24 pb-24 font-sans min-h-screen overflow-hidden">
+      {/* Purple glowing pulse */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute w-96 h-96 bg-purple-700 opacity-30 rounded-full blur-3xl animate-pulse top-20 left-1/2 -translate-x-1/2"></div>
+      </div>
+
+      <div className="w-full px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 relative z-10">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-orange-300 to-purple-500 drop-shadow-md select-none">
           Choose Your Plan
         </h1>
