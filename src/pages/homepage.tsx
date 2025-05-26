@@ -1,9 +1,8 @@
-
 const HomePage = () => {
   return (
     <div className="min-h-screen bg-black text-white font-sans">
       {/* Hero Section */}
-      <div className="text-center py-20 px-6 sm:px-10 lg:px-32 bg-gradient-to-br from-purple-900 via-black to-black">
+      <div className="min-h-screen flex flex-col items-center justify-center text-center px-6 sm:px-10 lg:px-32 bg-gradient-to-br from-purple-900 via-black to-black">
         <h1 className="text-5xl font-bold mb-4">Welcome to LEADA Clinic Portal</h1>
         <p className="text-gray-300 text-lg max-w-2xl mx-auto">
           Simplify patient flow and improve clinic efficiency with our AI-powered token management system.
@@ -56,7 +55,6 @@ const HomePage = () => {
           Create Your Clinic
         </a>
       </div>
-
     </div>
   );
 };

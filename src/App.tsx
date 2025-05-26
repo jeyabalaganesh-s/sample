@@ -1,3 +1,4 @@
+import "./pages/i18n"; 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./pages/layout";
 import SubscriptionPage from "./pages/subscriptionpage";
@@ -5,6 +6,7 @@ import LoginPage from "./components/GoogleLogin";
 import Signup from "./pages/signup";
 import Homepage from "./pages/homepage";
 import "./styles/global.css"
+
 
 // Feature pages
 import FeaturesLanding from "./pages/FeaturesLanding";
