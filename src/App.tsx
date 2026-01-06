@@ -1,10 +1,23 @@
 import { useState } from "react";
 
-export default function DigiGoldOptimizer() {
+// App.tsx
+
+// Result type
+interface DigiGoldResult {
+  eligibleAmount: string;
+  bestAmount: string;
+  baseGramRaw: string;
+  roundedGram: string;
+  baseMg: number;
+  bonusMg: number;
+  totalMg: number;
+}
+
+export default function App() {
   // State
-  const [goldPrice, setGoldPrice] = useState(12725);
-  const [bonusMg, setBonusMg] = useState(1);
-  const [result, setResult] = useState(null);
+  const [goldPrice, setGoldPrice] = useState<number>(12725);
+  const [bonusMg, setBonusMg] = useState<number>(1);
+  const [result, setResult] = useState<DigiGoldResult | null>(null);
 
   /*
    DIGIGOLD RULE (MINIMAL TRANSACTION – BEST PRICE)
@@ -25,7 +38,7 @@ export default function DigiGoldOptimizer() {
   */
 
   // DigiGold rounding: 3 decimals (milligram precision)
-  const digiRound = (grams: number) => Number(grams.toFixed(3));
+  const digiRound = (grams: number): number => Number(grams.toFixed(3));
 
   const calculateBestAmount = () => {
     const eligibleAmount = goldPrice / 100;
@@ -33,7 +46,7 @@ export default function DigiGoldOptimizer() {
     // Base rounded gold at eligibility (reference)
     const baseAtEligibility = digiRound(eligibleAmount / goldPrice) * 1000;
 
-    let best = null;
+    let best: DigiGoldResult | null = null;
 
     // Scan forward in small steps to find FIRST rounding jump
     for (let amt = eligibleAmount; amt <= eligibleAmount * 2; amt += 0.01) {
@@ -44,7 +57,6 @@ export default function DigiGoldOptimizer() {
       const bonus = amt >= eligibleAmount ? bonusMg : 0;
       const totalMg = roundedBaseMg + bonus;
 
-      // We want the FIRST amount where rounded base gold increases
       if (roundedBaseMg > baseAtEligibility) {
         best = {
           eligibleAmount: eligibleAmount.toFixed(2),
