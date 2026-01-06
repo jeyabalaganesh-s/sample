@@ -1,73 +1,107 @@
-import "./pages/i18n"; 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Layout from "./pages/layout";
-import SubscriptionPage from "./pages/subscriptionpage";
-import LoginPage from "./components/GoogleLogin";
-import Signup from "./pages/signup";
-import Homepage from "./pages/homepage";
-import "./styles/global.css"
+import { useState } from "react";
 
+export default function DigiGoldOptimizer() {
+  // State
+  const [goldPrice, setGoldPrice] = useState(12725);
+  const [bonusMg, setBonusMg] = useState(1);
+  const [result, setResult] = useState(null);
 
-// Feature pages
-import FeaturesLanding from "./pages/FeaturesLanding";
-import AiAnalytics from "./pages/features/AiAnalytics";
-import CustomDashboards from "./pages/features/CustomDashboards";
-import UserFeedback from "./pages/features/UserFeedback";
-import RealTimeInsights from "./pages/features/RealTimeInsights";
+  /*
+   DIGIGOLD RULE (MINIMAL TRANSACTION – BEST PRICE)
+   -------------------------------------------------
+   Goal:
+   - Find the MINIMUM possible transaction amount
+   - Such that bonus is applied
+   - And DigiGold rounding gives the MAX gold benefit per transaction
 
-// Solution pages
-import SolutionsLanding from "./pages/SolutionsLanding";
-import Ecommerce from "./pages/solutions/Ecommerce";
-import Saas from "./pages/solutions/Saas";
-import Enterprise from "./pages/solutions/Enterprise";
-import Startups from "./pages/solutions/Startups";
+   Rules:
+   1. Bonus eligibility threshold = GoldPrice / 100
+   2. Base gold = Amount / GoldPrice (in grams)
+   3. DigiGold rounds base gold to 3 decimals (grams)
+      - standard rounding (4th decimal >= 5 -> round up)
+   4. Bonus = fixed mg, applied only if eligible
+   5. BEST amount = smallest amount >= eligibility
+      that increases rounded base gold (mg jump)
+  */
 
-// Resource pages
-import ResourcesLanding from "./pages/ResourcesLanding";
-import Blog from "./pages/resources/Blog";
-import HelpCenter from "./pages/resources/HelpCenter";
-import Documentation from "./pages/resources/Documentation";
-import Community from "./pages/resources/Community";
+  // DigiGold rounding: 3 decimals (milligram precision)
+  const digiRound = (grams: number) => Number(grams.toFixed(3));
 
-import "./styles/global.css";
+  const calculateBestAmount = () => {
+    const eligibleAmount = goldPrice / 100;
 
-const App = () => {
+    // Base rounded gold at eligibility (reference)
+    const baseAtEligibility = digiRound(eligibleAmount / goldPrice) * 1000;
+
+    let best = null;
+
+    // Scan forward in small steps to find FIRST rounding jump
+    for (let amt = eligibleAmount; amt <= eligibleAmount * 2; amt += 0.01) {
+      const baseGramRaw = amt / goldPrice;
+      const roundedGram = digiRound(baseGramRaw);
+      const roundedBaseMg = roundedGram * 1000;
+
+      const bonus = amt >= eligibleAmount ? bonusMg : 0;
+      const totalMg = roundedBaseMg + bonus;
+
+      // We want the FIRST amount where rounded base gold increases
+      if (roundedBaseMg > baseAtEligibility) {
+        best = {
+          eligibleAmount: eligibleAmount.toFixed(2),
+          bestAmount: amt.toFixed(2),
+          baseGramRaw: baseGramRaw.toFixed(6),
+          roundedGram: roundedGram.toFixed(3),
+          baseMg: roundedBaseMg,
+          bonusMg: bonus,
+          totalMg,
+        };
+        break; // minimal amount found
+      }
+    }
+
+    setResult(best);
+  };
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          {/* Home */}
-          <Route index element={<Homepage />} />
+    <div className="max-w-xl mx-auto p-6 space-y-6">
+      <h1 className="text-2xl font-semibold">DigiGold Investment Optimizer</h1>
 
-          {/* Authentication */}
-          <Route path="pricing" element={<SubscriptionPage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="signup" element={<Signup />} />
+      <div className="grid grid-cols-1 gap-4">
+        <label className="text-sm">Gold Price per Gram (₹)</label>
+        <input
+          type="number"
+          value={goldPrice}
+          onChange={(e) => setGoldPrice(Number(e.target.value))}
+          className="border p-2 rounded"
+        />
 
-          {/* Features */}
-          <Route path="features" element={<FeaturesLanding />} />
-          <Route path="features/ai-analytics" element={<AiAnalytics />} />
-          <Route path="features/dashboards" element={<CustomDashboards />} />
-          <Route path="features/feedback" element={<UserFeedback />} />
-          <Route path="features/insights" element={<RealTimeInsights />} />
+        <label className="text-sm">Bonus per Transaction (mg)</label>
+        <input
+          type="number"
+          value={bonusMg}
+          onChange={(e) => setBonusMg(Number(e.target.value))}
+          className="border p-2 rounded"
+        />
+      </div>
 
-          {/* Solutions */}
-          <Route path="solutions" element={<SolutionsLanding />} />
-          <Route path="solutions/ecommerce" element={<Ecommerce />} />
-          <Route path="solutions/saas" element={<Saas />} />
-          <Route path="solutions/enterprise" element={<Enterprise />} />
-          <Route path="solutions/startups" element={<Startups />} />
+      <button
+        onClick={calculateBestAmount}
+        className="bg-orange-600 text-white px-4 py-2 rounded"
+      >
+        Find Minimal Best Amount
+      </button>
 
-          {/* Resources */}
-          <Route path="resources" element={<ResourcesLanding />} />
-          <Route path="blog" element={<Blog />} />
-          <Route path="help-center" element={<HelpCenter />} />
-          <Route path="docs" element={<Documentation />} />
-          <Route path="community" element={<Community />} />
-        </Route>
-      </Routes>
-    </Router>
+      {result && (
+        <div className="bg-gray-50 border rounded p-4 space-y-2">
+          <h2 className="font-semibold text-lg">Minimal Best Transaction</h2>
+          <p><b>Bonus Eligibility Threshold:</b> ₹{result.eligibleAmount}</p>
+          <p><b>Best Minimal Amount to Invest:</b> ₹{result.bestAmount}</p>
+          <p>Base Gold (raw): {result.baseGramRaw} g</p>
+          <p>Rounded Gold (3-decimal): {result.roundedGram} g</p>
+          <p>Bonus Gold: {result.bonusMg} mg</p>
+          <p className="font-semibold"><b>Total Gold Credited:</b> {result.totalMg} mg</p>
+        </div>
+      )}
+    </div>
   );
-};
-
-export default App;
+}
