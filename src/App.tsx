@@ -75,45 +75,105 @@ export default function App() {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6 space-y-6">
-      <h1 className="text-2xl font-semibold">DigiGold Investment Optimizer</h1>
-
-      <div className="grid grid-cols-1 gap-4">
-        <label className="text-sm">Gold Price per Gram (₹)</label>
-        <input
-          type="number"
-          value={goldPrice}
-          onChange={(e) => setGoldPrice(Number(e.target.value))}
-          className="border p-2 rounded"
-        />
-
-        <label className="text-sm">Bonus per Transaction (mg)</label>
-        <input
-          type="number"
-          value={bonusMg}
-          onChange={(e) => setBonusMg(Number(e.target.value))}
-          className="border p-2 rounded"
-        />
-      </div>
-
-      <button
-        onClick={calculateBestAmount}
-        className="bg-orange-600 text-white px-4 py-2 rounded"
-      >
-        Find Minimal Best Amount
-      </button>
-
-      {result && (
-        <div className="bg-gray-50 border rounded p-4 space-y-2">
-          <h2 className="font-semibold text-lg">Minimal Best Transaction</h2>
-          <p><b>Bonus Eligibility Threshold:</b> ₹{result.eligibleAmount}</p>
-          <p><b>Best Minimal Amount to Invest:</b> ₹{result.bestAmount}</p>
-          <p>Base Gold (raw): {result.baseGramRaw} g</p>
-          <p>Rounded Gold (3-decimal): {result.roundedGram} g</p>
-          <p>Bonus Gold: {result.bonusMg} mg</p>
-          <p className="font-semibold"><b>Total Gold Credited:</b> {result.totalMg} mg</p>
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 py-10 px-4">
+      <div className="max-w-xl mx-auto">
+        {/* Header Card */}
+        <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 border border-orange-100">
+          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
+            DigiGold Investment Optimizer
+          </h1>
+          <p className="text-sm text-gray-600 mt-1">
+            Find the minimum transaction amount that maximizes gold + bonus
+          </p>
         </div>
-      )}
+
+        {/* Input Card */}
+        <div className="bg-white rounded-2xl shadow-md p-6 space-y-5 border border-orange-100">
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-700">
+              Gold Price per Gram (₹)
+            </label>
+            <input
+              type="number"
+              value={goldPrice}
+              onChange={(e) => setGoldPrice(Number(e.target.value))}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-700">
+              Bonus per Transaction (mg)
+            </label>
+            <input
+              type="number"
+              value={bonusMg}
+              onChange={(e) => setBonusMg(Number(e.target.value))}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400"
+            />
+          </div>
+
+          <button
+            onClick={calculateBestAmount}
+            className="w-full mt-3 rounded-xl bg-orange-600 px-4 py-3 text-white font-semibold shadow hover:bg-orange-700 active:scale-[0.98] transition"
+          >
+            Find Minimal Best Amount
+          </button>
+        </div>
+
+        {/* Result Card */}
+        {result && (
+          <div className="mt-6 bg-white rounded-2xl shadow-lg p-6 border border-green-200">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Minimal Best Transaction
+            </h2>
+
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="bg-gray-50 rounded-lg p-3">
+                <p className="text-gray-500">Eligibility Threshold</p>
+                <p className="font-semibold text-gray-900">
+                  ₹{result.eligibleAmount}
+                </p>
+              </div>
+
+              <div className="bg-orange-50 rounded-lg p-3">
+                <p className="text-gray-500">Best Amount</p>
+                <p className="font-semibold text-orange-700">
+                  ₹{result.bestAmount}
+                </p>
+              </div>
+
+              <div className="bg-gray-50 rounded-lg p-3">
+                <p className="text-gray-500">Base Gold (raw)</p>
+                <p className="font-medium text-gray-900">
+                  {result.baseGramRaw} g
+                </p>
+              </div>
+
+              <div className="bg-gray-50 rounded-lg p-3">
+                <p className="text-gray-500">Rounded Gold</p>
+                <p className="font-medium text-gray-900">
+                  {result.roundedGram} g
+                </p>
+              </div>
+
+              <div className="bg-gray-50 rounded-lg p-3">
+                <p className="text-gray-500">Bonus Gold</p>
+                <p className="font-medium text-gray-900">
+                  {result.bonusMg} mg
+                </p>
+              </div>
+
+              <div className="bg-green-50 rounded-lg p-3">
+                <p className="text-gray-500">Total Gold Credited</p>
+                <p className="text-xl font-bold text-green-700">
+                  {result.totalMg} mg
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
